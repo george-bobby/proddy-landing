@@ -18,7 +18,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-black to-gray-950 border-t border-gray-800/50 pt-16 pb-8">
+    <footer className="relative z-10 border-t border-gray-800/50 pt-16 pb-8">
       {/* Newsletter Section */}
       <div className="container mx-auto px-4 mb-16">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-gray-950 border border-gray-800/50 p-8 md:p-10">

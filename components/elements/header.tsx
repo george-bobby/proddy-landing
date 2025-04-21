@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Menu, X, FormInput } from "lucide-react"
+import { AnimatedButton } from "@/components/ui/animated-button"
+import { AnimatedLink } from "@/components/ui/animated-link"
+import { Menu, X, FormInput, ChevronDown } from "lucide-react"
 import MegaMenu from "./products-mega-menu"
 import SolutionsMegaMenu from "./solutions-mega-menu"
 import { cn } from "@/lib/utils"
@@ -43,62 +46,115 @@ export default function Header() {
   }, [])
 
   return (
-    <header
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled ? "bg-black/80 backdrop-blur-md border-b border-gray-800" : "bg-transparent",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        scrolled ? "bg-black/80 backdrop-blur-md border-b border-gray-800 shadow-lg" : "bg-transparent",
       )}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+            <Link href="/" className="flex items-center group">
+              <motion.span
+                className="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
                 Proddy
-              </span>
+              </motion.span>
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-1">
-            <Button
-              variant="ghost"
-              className="text-sm"
+          <nav className="hidden md:flex items-center space-x-4">
+            <motion.div
+              className="relative"
               onMouseEnter={() => setIsProductsMenuOpen(true)}
               onClick={() => setIsProductsMenuOpen(!isProductsMenuOpen)}
             >
-              Products
-            </Button>
-            <Button
-              variant="ghost"
-              className="text-sm"
+              <motion.button
+                className="flex items-center px-3 py-2 text-sm font-medium text-gray-200 hover:text-white transition-colors"
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                Products
+                <motion.div
+                  animate={{ rotate: isProductsMenuOpen ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="ml-1"
+                >
+                  <ChevronDown size={16} />
+                </motion.div>
+              </motion.button>
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500 origin-left"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: isProductsMenuOpen ? 1 : 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.div>
+
+            <motion.div
+              className="relative"
               onMouseEnter={() => setIsSolutionsMenuOpen(true)}
               onClick={() => setIsSolutionsMenuOpen(!isSolutionsMenuOpen)}
             >
-              Solutions
-            </Button>
-            <Link href="/pricing" passHref>
-              <Button variant="ghost" className="text-sm">
-                Pricing
-              </Button>
-            </Link>
+              <motion.button
+                className="flex items-center px-3 py-2 text-sm font-medium text-gray-200 hover:text-white transition-colors"
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                Solutions
+                <motion.div
+                  animate={{ rotate: isSolutionsMenuOpen ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="ml-1"
+                >
+                  <ChevronDown size={16} />
+                </motion.div>
+              </motion.button>
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500 origin-left"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: isSolutionsMenuOpen ? 1 : 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.div>
+
+            <AnimatedLink href="/pricing" className="px-3 py-2 text-sm font-medium text-gray-200 hover:text-white transition-colors">
+              Pricing
+            </AnimatedLink>
           </nav>
 
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="sm" className="hidden md:inline-flex">
+          <div className="flex items-center space-x-3">
+            <AnimatedLink href="/login" className="hidden md:inline-flex px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors">
               Log in
-            </Button>
-            <Button
+            </AnimatedLink>
+            <AnimatedButton
               className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white border-0"
               size="sm"
+              withRipple
             >
               Get Started
-            </Button>
-            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => {
-              setIsProductsMenuOpen(!isProductsMenuOpen)
-              setIsSolutionsMenuOpen(false)
-            }}>
-              {isProductsMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </Button>
+            </AnimatedButton>
+            <motion.button
+              className="p-2 rounded-full text-gray-400 hover:text-white md:hidden focus:outline-none"
+              onClick={() => {
+                setIsProductsMenuOpen(!isProductsMenuOpen)
+                setIsSolutionsMenuOpen(false)
+              }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <motion.div
+                animate={{ rotate: isProductsMenuOpen ? 90 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isProductsMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </motion.div>
+            </motion.button>
           </div>
         </div>
       </div>
@@ -186,6 +242,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-    </header>
+    </motion.header>
   )
 }

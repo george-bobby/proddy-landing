@@ -10,7 +10,7 @@ export function WhyProddySection() {
   const whyInView = useInView(whyRef, { once: true, amount: 0.2 })
 
   return (
-    <section ref={whyRef} className="py-20 bg-gradient-to-b from-gray-950 to-black">
+    <section ref={whyRef} className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16 animate-reveal">

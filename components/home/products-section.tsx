@@ -4,8 +4,13 @@ import { useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, useInView } from "framer-motion"
-import { Button } from "@/components/ui/button"
+// Button import removed - using AnimatedButton instead
 import { ArrowRight, Star, MessageSquare } from "lucide-react"
+import { AnimatedCard } from "@/components/ui/animated-card"
+import { AnimatedButton } from "@/components/ui/animated-button"
+import { AnimatedIcon } from "@/components/ui/animated-icon"
+import { ScrollReveal } from "@/components/ui/scroll-reveal"
+import { staggerContainer, fadeIn, drawPath } from "@/lib/animations"
 import { products } from "../data"
 
 export function ProductsSection() {
@@ -19,11 +24,8 @@ export function ProductsSection() {
   const otherProducts = products.filter(product => !product.featured)
 
   return (
-    <section ref={productsRef} className="py-24 bg-gradient-to-b from-gray-950 to-black relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-blue-900/10 to-transparent"></div>
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl"></div>
+    <section ref={productsRef} className="py-24 relative overflow-hidden">
+      {/* Using global background - no local background elements */}
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 animate-reveal">
@@ -94,14 +96,15 @@ export function ProductsSection() {
                   </ul>
 
                   <div className="mt-auto">
-                    <Link href={flowProduct.href}>
-                      <Button
+                    <Link href={flowProduct.href || "/flow"} className="block w-full">
+                      <AnimatedButton
                         size="lg"
-                        className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white border-0"
+                        className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white border-0 group"
+                        withRipple
                       >
-                        Explore Proddy Flow
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
+                        <span>Explore Proddy Flow</span>
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      </AnimatedButton>
                     </Link>
                   </div>
                 </div>
@@ -166,14 +169,15 @@ export function ProductsSection() {
                   </ul>
 
                   <div className="mt-auto">
-                    <Link href={pingProduct.href}>
-                      <Button
+                    <Link href={pingProduct.href || "/ping"} className="block w-full">
+                      <AnimatedButton
                         size="lg"
-                        className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white border-0"
+                        className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white border-0 group"
+                        withRipple
                       >
-                        Explore Proddy Ping
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
+                        <span>Explore Proddy Ping</span>
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      </AnimatedButton>
                     </Link>
                   </div>
                 </div>
@@ -183,60 +187,78 @@ export function ProductsSection() {
         </div>
 
         {/* Other Products */}
-        <h3 className="text-2xl font-bold mb-8 text-center">More Powerful Tools</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ScrollReveal>
+          <h3 className="text-2xl font-bold mb-8 text-center animate-slide-in-up">More Powerful Tools</h3>
+        </ScrollReveal>
+
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
           {otherProducts.map((product, index) => (
-            <motion.div
+            <AnimatedCard
               key={product.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={productsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{
-                duration: 0.5,
-                delay: productsInView ? 0.2 + index * 0.1 : 0,
-              }}
+              delay={0.1 * index}
               className="group h-full"
+              hoverEffect={false}
             >
               <Link
                 href={product.href}
-                className={`flex flex-col h-full p-6 rounded-xl bg-gray-900/50 border border-gray-800 hover:border-${product.color}-600/40 hover:bg-gray-800/50 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-${product.color}-900/10`}
+                className={`flex flex-col h-full p-6 rounded-xl bg-gray-900/50 border border-gray-800 hover:border-${product.color}-600/40 hover:bg-gray-800/50 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-${product.color}-900/10 relative overflow-hidden group`}
               >
-                <div className="flex items-start mb-4">
-                  <div className={`p-3 rounded-lg bg-gradient-to-r ${product.gradient} mr-4 flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                    <product.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                {/* Animated background gradient on hover */}
+                <div className={`absolute inset-0 bg-gradient-to-br from-${product.color}-900/0 to-${product.color}-900/0 group-hover:from-${product.color}-900/10 group-hover:to-${product.color}-800/5 transition-all duration-700 ease-out opacity-0 group-hover:opacity-100`}></div>
+
+                <div className="flex items-start mb-4 relative z-10">
+                  <div className={`p-3 rounded-lg bg-gradient-to-r ${product.gradient} mr-4 flex-shrink-0 transform transition-all duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-lg`}>
+                    <AnimatedIcon icon={product.icon} className="h-6 w-6 text-white" hoverEffect={false} />
                   </div>
                   <div>
                     <div className="flex items-center">
                       <h3
-                        className={`text-xl font-semibold bg-gradient-to-r ${product.gradient} bg-clip-text text-transparent`}
+                        className={`text-xl font-semibold bg-gradient-to-r ${product.gradient} bg-clip-text text-transparent transform transition-all duration-300 group-hover:translate-x-1`}
                       >
                         Proddy {product.name}
                       </h3>
                     </div>
-                    <p className="text-gray-400 text-sm">{product.description}</p>
+                    <p className="text-gray-400 text-sm transition-all duration-300 group-hover:text-gray-300">{product.description}</p>
                   </div>
                 </div>
-                <div className="relative rounded-lg overflow-hidden border border-gray-800 h-40 mb-4 group-hover:border-gray-700 transition-colors duration-300 flex-shrink-0">
+
+                <div className="relative rounded-lg overflow-hidden border border-gray-800 h-40 mb-4 group-hover:border-gray-700 transition-all duration-500 flex-shrink-0 group-hover:shadow-md">
                   <Image
                     src={`/placeholder.svg?height=400&width=600&text=Proddy%20${product.name}`}
                     alt={`Proddy ${product.name}`}
                     width={600}
                     height={400}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover transform transition-all duration-700 ease-out group-hover:scale-110"
                   />
-                  <div className={`absolute inset-0 bg-gradient-to-tr from-${product.color}-500/10 via-transparent to-${product.color}-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                  <div className={`absolute inset-0 bg-gradient-to-tr from-${product.color}-500/10 via-transparent to-${product.color}-400/10 opacity-0 group-hover:opacity-100 transition-all duration-500`}></div>
+
+                  {/* Animated badge that appears on hover */}
+                  <div className={`absolute top-3 right-3 bg-${product.color}-600/90 text-white text-xs font-medium px-2 py-1 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0 shadow-sm`}>
+                    Explore
+                  </div>
                 </div>
-                <div className="flex justify-between items-center mt-auto pt-2">
-                  <span className={`text-sm text-gray-400 group-hover:text-${product.color}-400 transition-colors duration-300`}>
+
+                <div className="flex justify-between items-center mt-auto pt-2 relative z-10">
+                  <span className={`text-sm text-gray-400 group-hover:text-${product.color}-400 transition-all duration-300 transform group-hover:translate-x-1`}>
                     Learn more
                   </span>
-                  <div className={`p-2 rounded-full bg-gray-800 group-hover:bg-${product.color}-900/30 transition-colors duration-300`}>
+                  <div className={`p-2 rounded-full bg-gray-800 group-hover:bg-${product.color}-900/50 transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-3`}>
                     <ArrowRight className={`h-4 w-4 text-gray-400 group-hover:text-${product.color}-400 transition-colors duration-300`} />
                   </div>
                 </div>
+
+                {/* Animated corner accent */}
+                <div className={`absolute bottom-0 right-0 w-12 h-12 bg-gradient-to-tl from-${product.color}-500/0 to-${product.color}-500/0 group-hover:from-${product.color}-500/20 group-hover:to-transparent transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 rounded-tl-3xl`}></div>
               </Link>
-            </motion.div>
+            </AnimatedCard>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

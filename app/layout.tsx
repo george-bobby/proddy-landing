@@ -5,6 +5,10 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/elements/header"
 import Footer from "@/components/elements/footer"
+import { PageTransition } from "@/components/page-transition"
+// CursorEffect removed
+import { ScrollProgress } from "@/components/ui/scroll-progress"
+import { FloatingElements } from "@/components/ui/floating-elements"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -29,10 +33,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-black text-white antialiased`}>
+      <body className={`${inter.className} bg-black text-white antialiased relative`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+          <ScrollProgress />
+          <FloatingElements />
           <Header />
-          <main className="min-h-screen">{children}</main>
+          <PageTransition>
+            <main className="min-h-screen">{children}</main>
+          </PageTransition>
           <Footer />
         </ThemeProvider>
       </body>
