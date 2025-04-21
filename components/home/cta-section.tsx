@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { AnimatedButton } from "@/components/ui/animated-button"
-import { ScrollReveal } from "@/components/ui/scroll-reveal"
-import { AnimatedText } from "@/components/ui/animated-text"
+import { AnimatedButton } from "@/components/extras/animated-button"
+import { ScrollReveal } from "@/components/extras/scroll-reveal"
+import { AnimatedText } from "@/components/extras/animated-text"
 import { staggerContainer } from "@/lib/animations"
 
 export function CTASection() {

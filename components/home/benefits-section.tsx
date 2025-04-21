@@ -2,11 +2,11 @@
 
 import { useRef } from "react"
 import { motion } from "framer-motion"
-import { AnimatedButton } from "@/components/ui/animated-button"
-import { AnimatedCard } from "@/components/ui/animated-card"
-import { AnimatedIcon } from "@/components/ui/animated-icon"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { ScrollReveal } from "@/components/ui/scroll-reveal"
+import { AnimatedButton } from "@/components/extras/animated-button"
+import { AnimatedCard } from "@/components/extras/animated-card"
+import { AnimatedIcon } from "@/components/extras/animated-icon"
+import { SectionHeading } from "@/components/extras/section-heading"
+import { ScrollReveal } from "@/components/extras/scroll-reveal"
 import { staggerContainer } from "@/lib/animations"
 import { benefits } from "../data"
 

@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { FloatingIcons } from "@/components/ui/floating-icons"
+import { FloatingIcons } from "@/components/extras/floating-icons"
 import { ArrowRight, Play } from "lucide-react"
 
 export function HeroSection() {

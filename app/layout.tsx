@@ -7,8 +7,8 @@ import Header from "@/components/elements/header"
 import Footer from "@/components/elements/footer"
 import { PageTransition } from "@/components/page-transition"
 // CursorEffect removed
-import { ScrollProgress } from "@/components/ui/scroll-progress"
-import { FloatingElements } from "@/components/ui/floating-elements"
+import { ScrollProgress } from "@/components/extras/scroll-progress"
+import { FloatingElements } from "@/components/extras/floating-elements"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -35,7 +35,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} bg-black text-white antialiased relative`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <ScrollProgress />
+          <ScrollProgress
+            height={10}
+            position="bottom"
+            gradient={true}
+            shadow={true}
+            showPercentage={false}
+          />
           <FloatingElements />
           <Header />
           <PageTransition>
