@@ -22,6 +22,7 @@ import {
   Calendar,
   CheckSquare,
   ArrowRight,
+  FormInput,
 } from "lucide-react"
 import useScrollReveal from "@/hooks/use-scroll-reveal"
 
@@ -52,6 +53,7 @@ const solutions = [
       { name: "Canvas", icon: PenTool, color: "yellow" },
       { name: "Notes", icon: FileText, color: "emerald" },
       { name: "Flow", icon: LineChart, color: "blue" },
+      { name: "Input", icon: FormInput, color: "pink" },
     ],
     image: "/placeholder.svg?height=600&width=800&text=Remote%20Teams",
   },
@@ -78,6 +80,7 @@ const solutions = [
     products: [
       { name: "Flow", icon: LineChart, color: "blue" },
       { name: "Notes", icon: FileText, color: "emerald" },
+      { name: "Input", icon: FormInput, color: "pink" },
       { name: "Slots", icon: Calendar, color: "violet" },
       { name: "Ping", icon: MessageSquare, color: "indigo" },
       { name: "Canvas", icon: PenTool, color: "yellow" },
@@ -110,6 +113,7 @@ const solutions = [
       { name: "Huddle", icon: Video, color: "red" },
       { name: "Canvas", icon: PenTool, color: "yellow" },
       { name: "Notes", icon: FileText, color: "emerald" },
+      { name: "Input", icon: FormInput, color: "pink" },
     ],
     image: "/placeholder.svg?height=600&width=800&text=Developers",
   },
@@ -137,6 +141,7 @@ const solutions = [
       { name: "Canvas", icon: PenTool, color: "yellow" },
       { name: "Flow", icon: LineChart, color: "blue" },
       { name: "Notes", icon: FileText, color: "emerald" },
+      { name: "Input", icon: FormInput, color: "pink" },
       { name: "Ping", icon: MessageSquare, color: "indigo" },
       { name: "Huddle", icon: Video, color: "red" },
     ],
@@ -168,6 +173,7 @@ const solutions = [
       { name: "Huddle", icon: Video, color: "red" },
       { name: "Notes", icon: FileText, color: "emerald" },
       { name: "Ping", icon: MessageSquare, color: "indigo" },
+      { name: "Input", icon: FormInput, color: "pink" },
     ],
     image: "/placeholder.svg?height=600&width=800&text=Founders",
   },
@@ -195,6 +201,7 @@ const solutions = [
       { name: "Notes", icon: FileText, color: "emerald" },
       { name: "Canvas", icon: PenTool, color: "yellow" },
       { name: "Huddle", icon: Video, color: "red" },
+      { name: "Input", icon: FormInput, color: "pink" },
       { name: "Ticks", icon: CheckSquare, color: "orange" },
       { name: "Slots", icon: Calendar, color: "violet" },
     ],
@@ -209,11 +216,13 @@ const allProducts = [
   { name: "Huddle", icon: Video, color: "red", description: "Meetings" },
   { name: "Canvas", icon: PenTool, color: "yellow", description: "Whiteboarding" },
   { name: "Slots", icon: Calendar, color: "violet", description: "Scheduling" },
+  { name: "Input", icon: FormInput, color: "pink", description: "Forms & Surveys" },
   { name: "Ticks", icon: CheckSquare, color: "orange", description: "To-dos" },
 ]
 
 export default function SolutionsPage() {
-  const solutionRefs = useRef<(HTMLDivElement | null)[]>(solutions.map(() => null))
+  // Create refs for each solution section
+  // const solutionRefs = useRef<(HTMLDivElement | null)[]>(solutions.map(() => null))
   const [activeTab, setActiveTab] = useState<string>("challenges")
 
   // Use the custom hook for scroll reveal animations
@@ -268,7 +277,7 @@ export default function SolutionsPage() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="p-6 rounded-xl bg-gray-900/50 border border-gray-800 hover:border-gray-700 transition-all duration-300 card-hover"
                 >
-                  <Link href={`#${solution.id}`} className="block h-full" scroll={false}>
+                  <Link href={`/solutions/${solution.id}`} className="block h-full">
                     <div className="flex items-center mb-4">
                       <div className="p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 mr-4">
                         <solution.icon className="h-6 w-6 text-white" aria-hidden="true" />
@@ -368,9 +377,8 @@ export default function SolutionsPage() {
             key={solution.id}
             id={solution.id}
             ref={solutionInView[index]}
-            className={`py-20 ${
-              isEven ? "bg-gradient-to-b from-black to-gray-950" : "bg-gradient-to-b from-gray-950 to-black"
-            }`}
+            className={`py-20 ${isEven ? "bg-gradient-to-b from-black to-gray-950" : "bg-gradient-to-b from-gray-950 to-black"
+              }`}
           >
             <div className="container mx-auto px-4">
               <div className={`flex flex-col ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"} items-center gap-12`}>
@@ -409,21 +417,19 @@ export default function SolutionsPage() {
                   <div className="mb-8">
                     <div className="flex border-b border-gray-800 mb-6">
                       <button
-                        className={`px-4 py-2 text-sm font-medium ${
-                          activeTab === "challenges"
-                            ? "text-indigo-400 border-b-2 border-indigo-400"
-                            : "text-gray-400 hover:text-gray-300"
-                        }`}
+                        className={`px-4 py-2 text-sm font-medium ${activeTab === "challenges"
+                          ? "text-indigo-400 border-b-2 border-indigo-400"
+                          : "text-gray-400 hover:text-gray-300"
+                          }`}
                         onClick={() => setActiveTab("challenges")}
                       >
                         Challenges
                       </button>
                       <button
-                        className={`px-4 py-2 text-sm font-medium ${
-                          activeTab === "solutions"
-                            ? "text-indigo-400 border-b-2 border-indigo-400"
-                            : "text-gray-400 hover:text-gray-300"
-                        }`}
+                        className={`px-4 py-2 text-sm font-medium ${activeTab === "solutions"
+                          ? "text-indigo-400 border-b-2 border-indigo-400"
+                          : "text-gray-400 hover:text-gray-300"
+                          }`}
                         onClick={() => setActiveTab("solutions")}
                       >
                         How Proddy Helps
@@ -479,12 +485,14 @@ export default function SolutionsPage() {
                     ))}
                   </div>
 
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white border-0"
-                  >
-                    Get Started
-                  </Button>
+                  <Link href={`/solutions/${solution.id}`}>
+                    <Button
+                      size="lg"
+                      className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white border-0"
+                    >
+                      Learn More
+                    </Button>
+                  </Link>
                 </motion.div>
               </div>
             </div>
